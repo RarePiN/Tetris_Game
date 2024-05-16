@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <conio.h>
+#include <Windows.h>
 using namespace std;
 
 class Game{
@@ -13,6 +14,7 @@ class Game{
 		int level;			// Current level
 		bool gameOver;		// If the game is over
 		int fps;			// Target fps
+		int frame;			// Current frame
 		
 		void boardClear() { // Clear board
 			for (int i = 0; i < 10; i++) {
@@ -29,6 +31,13 @@ class Game{
 			nextPiece = distribution(gen);
 		}
 		
+		void clearScreen() {
+			cout << "\033[2J";
+			cout << "\033[H";
+
+			return;
+		}
+
 		void updatePiece(char keypress) {
 		}
 		
@@ -39,6 +48,31 @@ class Game{
 		}
 		
 		void handleInput() {
+			if (_kbhit()) { // Check if a key is pressed
+        		char key = _getch(); // Get the key pressed
+
+				// Process the key press
+				switch (key) {
+					case 'a': // Left Movement
+						
+						break;
+					case 'd': // Right Movement
+						
+						break;
+					case 's': // Down Movement
+						
+						break;
+					case 'w': // Hard Drop
+						
+						break;
+					case 'q': // Left Spin
+
+						break;
+					case 'e': // Right Spin
+
+						break;
+				}
+			}
 		}
 		
 		void updateScore(int line, int level) {
@@ -78,6 +112,9 @@ class Game{
 		}
 		
 		void drawBoard() {
+
+			clearScreen();
+			
             for (int i = 0; i < 21; i++) {
                 for (int j = 0; j < 12; j++) {
                     if (i != 20 and (j == 0 or j == 11)) {
@@ -103,6 +140,19 @@ class Game{
 		}
 		
 		void start() {	// Main Game Loop
+
+			while(gameOver == false) {
+				handleInput();
+				drawBoard();
+				Sleep(1000 / fps);
+				frame += 1;
+				if (frame == fps) {
+					frame = 0;
+				}
+			}
+
+			gameIsOver();
+
 		}
 		
 	public:
@@ -111,14 +161,15 @@ class Game{
     		level = l;			// Current level
 			cleared = c;
     		gameOver = g;		// If the game is over
-    		fps = f;			// Target fps			
+    		fps = f;			// Target fps		
+			frame = 0;	
             boardClear();
 		}
 };
 
 int main() {
     Game Tetris(0, 0, 0, false, 30);
-
+	cout << "Testing" << endl;
     return 0;
 }
 
