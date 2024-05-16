@@ -41,12 +41,11 @@ class Game{
 		}
 		
 		void updateScore(int line, int level) {
-             if (line == 4) score += (1200 * (level + 1)); //Tetris
-             if (line == 3) score += (300 * (level + 1));  //Triple
-             if (line == 2) score += (100 * (level + 1));  //Double
-             if (line == 1) score += (40 * (level + 1));   //Single
-             
-             return;
+            if (line == 4) score += (1200 * (level + 1)); //Tetris
+            if (line == 3) score += (300 * (level + 1));  //Triple
+            if (line == 2) score += (100 * (level + 1));  //Double
+            if (line == 1) score += (40 * (level + 1));   //Single 
+            return;
 		}
 
 		void clearLines(int pos, int count) {
@@ -73,20 +72,20 @@ class Game{
 		}
 		
 		void drawBoard() {
-             for (int i = 0; i < 21; i++) {
-                 for (int j = 0; j < 12; j++) {
-                     if (i != 20 and (j == 0 or j == 11)) {
+            for (int i = 0; i < 21; i++) {
+                for (int j = 0; j < 12; j++) {
+                    if (i != 20 and (j == 0 or j == 11)) {
                         cout << "|";
-                     }
-                     else if (i != 20 and (j > 0 and j < 11)) {
+                    }
+                    else if (i != 20 and (j > 0 and j < 11)) {
                            if (board[j-1][19 - i] == 1) cout << "[]";
                            else cout << "  ";
-                     }
-                     if (i == 20) {
+                    }
+                    if (i == 20) {
                         if (j == 0 or j == 11) cout << "+";
                         else cout << "==";
-                     }
-                 }
+                    }
+                }
 
                 if (i == 0) cout << "   Score:";
                 if (i == 1) cout << "   " << score;
