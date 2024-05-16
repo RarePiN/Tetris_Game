@@ -8,10 +8,11 @@ class Game{
 		int board[10][20];	// Grid of the game board
 		int currentPiece;	// Current piece
 		int nextPiece;		// Next piece
-		int score;		// Current Score
-		int level;		// Current level
+		int score;			// Current Score
+		int cleared;		// Total line cleared
+		int level;			// Current level
 		bool gameOver;		// If the game is over
-		int fps;		// Target fps
+		int fps;			// Target fps
 		
 		void boardClear() { // Clear board
 			for (int i = 0; i < 10; i++) {
@@ -48,7 +49,7 @@ class Game{
             return;
 		}
 
-		void clearLines(int pos, int count) {
+		void clearLine(int pos, int count) {
 			for (int i = pos; i < pos + count; i++) {
 				for (int j = 0; j < 10; j++) {
 					board[j][i] = 0;
@@ -61,11 +62,16 @@ class Game{
 					board[j][i] = 0; 
 				}
 			}	// Move the lines down
-			
+
+			updateScore(count, level);
+			cleared += count;
+			updateLevel();
+
 			return;
 		}
 		
-		void updateLeve() {
+		void updateLevel() {
+			level = (cleared / 10);
 		}
 		
 		void gameIsOver() {
@@ -87,30 +93,31 @@ class Game{
                     }
                 }
 
-                if (i == 0) cout << "   Score:";
+            	if (i == 0) cout << "   Score:";
                 if (i == 1) cout << "   " << score;
                 if (i == 3) cout << "   Level:";
                 if (i == 4) cout << "   " << level;
                 if (i == 6) cout << "   Next:";
                 cout << endl;
-             }
+            }
 		}
 		
-		void start() {
+		void start() {	// Main Game Loop
 		}
 		
 	public:
-		Game(int s, int l, bool g, int f) {
-    		score = s;		// Current Score
-    		level = l;		// Current level
+		Game(int s, int l, int c, bool g, int f) {
+    		score = s;			// Current Score
+    		level = l;			// Current level
+			cleared = c;
     		gameOver = g;		// If the game is over
-    		fps = f;		// Target fps			
+    		fps = f;			// Target fps			
             boardClear();
 		}
 };
 
 int main() {
-    Game Tetris(0, 0, false, 30);
+    Game Tetris(0, 0, 0, false, 30);
 
     return 0;
 }
