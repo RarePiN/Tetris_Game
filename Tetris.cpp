@@ -8,10 +8,10 @@ class Game{
 		int board[10][20];	// Grid of the game board
 		int currentPiece;	// Current piece
 		int nextPiece;		// Next piece
-		int score;			// Current Score
-		int level;			// Current level
+		int score;		// Current Score
+		int level;		// Current level
 		bool gameOver;		// If the game is over
-		int fps;			// Target fps
+		int fps;		// Target fps
 		
 		void boardClear() { // Clear board
 			for (int i = 0; i < 10; i++) {
@@ -101,10 +101,10 @@ class Game{
 		
 	public:
 		Game(int s, int l, bool g, int f) {
-    		score = s;			// Current Score
-    		level = l;			// Current level
+    		score = s;		// Current Score
+    		level = l;		// Current level
     		gameOver = g;		// If the game is over
-    		fps = f;			// Target fps			
+    		fps = f;		// Target fps			
             boardClear();
 		}
 };
