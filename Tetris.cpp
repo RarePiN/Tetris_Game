@@ -1,6 +1,8 @@
 #include <iostream>
 #include <random>
 #include <conio.h>
+#include <chrono>
+#include <thread>
 #include <Windows.h>
 using namespace std;
 
@@ -32,9 +34,7 @@ class Game{
 		}
 		
 		void clearScreen() {
-			cout << "\033[2J";
-			cout << "\033[H";
-
+			system("cls");
 			return;
 		}
 
@@ -70,6 +70,9 @@ class Game{
 						break;
 					case 'e': // Right Spin
 
+						break;
+					case 'p': // Pause or Exit
+						gameOver = true;
 						break;
 				}
 			}
@@ -109,50 +112,58 @@ class Game{
 		}
 		
 		void gameIsOver() {
+			cout << "Game Over!" << endl;
+			return;
 		}
 		
 		void drawBoard() {
+			std::string output;  // String to store the output for each row
 
-			clearScreen();
-			
-            for (int i = 0; i < 21; i++) {
-                for (int j = 0; j < 12; j++) {
-                    if (i != 20 and (j == 0 or j == 11)) {
-                        cout << "|";
-                    }
-                    else if (i != 20 and (j > 0 and j < 11)) {
-                           if (board[j-1][19 - i] == 1) cout << "[]";
-                           else cout << "  ";
-                    }
-                    if (i == 20) {
-                        if (j == 0 or j == 11) cout << "+";
-                        else cout << "==";
-                    }
-                }
+			bool isVerticalBorder = false;
 
-            	if (i == 0) cout << "   Score:";
-                if (i == 1) cout << "   " << score;
-                if (i == 3) cout << "   Level:";
-                if (i == 4) cout << "   " << level;
-                if (i == 6) cout << "   Next:";
-                cout << endl;
-            }
-		}
-		
-		void start() {	// Main Game Loop
+			for (int i = 0; i < 21; ++i) {
+				output.clear();  // Clear the output string for each row
 
-			while(gameOver == false) {
-				handleInput();
-				drawBoard();
-				Sleep(1000 / fps);
-				frame += 1;
-				if (frame == fps) {
-					frame = 0;
+				isVerticalBorder = (i != 20);
+
+				for (int j = 0; j < 12; ++j) {
+					bool isInnerCell = (i != 20 && (j > 0 && j < 11));
+
+					if (isVerticalBorder) {
+						if (j == 0 || j == 11) {
+							output += "|";
+						} else if (isInnerCell) {
+							int cellValue = board[j - 1][19 - i];
+							output += (cellValue == 1) ? "[]" : "  ";
+						}
+					} else {  // i == 20
+						if (j == 0 || j == 11) {
+							output += "+";
+						} else {
+							output += "==";
+						}
+					}
 				}
+
+				// Append additional output for specific rows
+				if (i == 0) {
+					output += "   Score:";
+				} else if (i == 1) {
+					output += "   " + std::to_string(score);
+				} else if (i == 3) {
+					output += "   Level:";
+				} else if (i == 4) {
+					output += "   " + std::to_string(level);
+				} else if (i == 6) {
+					output += "   Next:";
+				} else if (i == 18) {
+					output += "   FPS: " + std::to_string(fps);
+				} else if (i == 19) {
+					output += "   " + std::to_string(frame);
+				}
+
+				std::cout << output << std::endl;
 			}
-
-			gameIsOver();
-
 		}
 		
 	public:
@@ -165,11 +176,28 @@ class Game{
 			frame = 0;	
             boardClear();
 		}
+
+		void start() {	// Main Game Loop
+
+			while(gameOver == false) {
+				clearScreen();
+				handleInput();
+				drawBoard();
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / fps));
+				frame += 1;
+				if (frame == fps) {
+					frame = 0;
+				}
+			}
+
+			gameIsOver();
+
+		}
 };
 
 int main() {
-    Game Tetris(0, 0, 0, false, 30);
-	cout << "Testing" << endl;
+    Game Tetris(0, 0, 0, false, 24);
+	Tetris.start();
     return 0;
 }
 
