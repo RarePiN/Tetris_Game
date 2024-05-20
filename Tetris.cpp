@@ -11,12 +11,12 @@ class Game{
 		int board[10][20];	// Grid of the game board
 		int currentPiece;	// Current piece
 		int nextPiece;		// Next piece
-		int score;			// Current Score
+		int score;		// Current Score
 		int cleared;		// Total line cleared
-		int level;			// Current level
+		int level;		// Current level
 		bool gameOver;		// If the game is over
-		int fps;			// Target fps
-		int frame;			// Current frame
+		int fps;		// Target fps
+		int frame;		// Current frame
 		
 		void boardClear() { // Clear board
 			for (int i = 0; i < 10; i++) {
@@ -79,11 +79,11 @@ class Game{
 		}
 		
 		void updateScore(int line, int level) {
-            if (line == 4) score += (1200 * (level + 1)); //Tetris
-            if (line == 3) score += (300 * (level + 1));  //Triple
-            if (line == 2) score += (100 * (level + 1));  //Double
-            if (line == 1) score += (40 * (level + 1));   //Single 
-            return;
+            		if (line == 4) score += (1200 * (level + 1)); //Tetris
+            		if (line == 3) score += (300 * (level + 1));  //Triple
+            		if (line == 2) score += (100 * (level + 1));  //Double
+            		if (line == 1) score += (40 * (level + 1));   //Single 
+            		return;
 		}
 
 		void clearLine(int pos, int count) {
@@ -117,7 +117,7 @@ class Game{
 		}
 		
 		void drawBoard() {
-			std::string output;  // String to store the output for each row
+			string output;  // String to store the output for each row
 
 			bool isVerticalBorder = false;
 
@@ -149,32 +149,32 @@ class Game{
 				if (i == 0) {
 					output += "   Score:";
 				} else if (i == 1) {
-					output += "   " + std::to_string(score);
+					output += "   " + to_string(score);
 				} else if (i == 3) {
 					output += "   Level:";
 				} else if (i == 4) {
-					output += "   " + std::to_string(level);
+					output += "   " + to_string(level);
 				} else if (i == 6) {
 					output += "   Next:";
 				} else if (i == 18) {
-					output += "   FPS: " + std::to_string(fps);
+					output += "   FPS: " + to_string(fps);
 				} else if (i == 19) {
-					output += "   " + std::to_string(frame);
+					output += "   " + to_string(frame);
 				}
 
-				std::cout << output << std::endl;
+				cout << output << endl;
 			}
 		}
 		
 	public:
 		Game(int s, int l, int c, bool g, int f) {
-    		score = s;			// Current Score
-    		level = l;			// Current level
-			cleared = c;
+    		score = s;		// Current Score
+    		level = l;		// Current level
+		cleared = c;
     		gameOver = g;		// If the game is over
-    		fps = f;			// Target fps		
-			frame = 0;	
-            boardClear();
+    		fps = f;		// Target fps		
+		frame = 0;	
+            	boardClear();
 		}
 
 		void start() {	// Main Game Loop
@@ -183,7 +183,7 @@ class Game{
 				clearScreen();
 				handleInput();
 				drawBoard();
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / fps));
+				this_thread::sleep_for(chrono::milliseconds(1000 / fps));
 				frame += 1;
 				if (frame == fps) {
 					frame = 0;
@@ -196,8 +196,8 @@ class Game{
 };
 
 int main() {
-    Game Tetris(0, 0, 0, false, 24);
+    	Game Tetris(0, 0, 0, false, 24);
 	Tetris.start();
-    return 0;
+    	return 0;
 }
 
