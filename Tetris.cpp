@@ -11,7 +11,12 @@ class Game{
 	private:
 		int board[10][20];	// Grid of the game board
 		int currentPiece;	// Current piece
+		int pieceX;		// X Coordinate of piece
+		int pieceY;		// Y Coordinate of piece
+		int pieceD;		// Direction of piece
 		int nextPiece;		// Next piece
+		int gravity;		// Piece drop speed (Fall / s)
+		int dropFrame;		// Next frame of piece descend ((1 / Gravity) / (1 / fps))
 		int score;		// Current Score
 		int cleared;		// Total line cleared
 		int level;		// Current level
@@ -37,6 +42,9 @@ class Game{
 		void clearScreen() {
 			system("cls");
 			return;
+		}
+
+		bool checkCollision(int direction) {
 		}
 
 		void updatePiece(char keypress) {
@@ -197,7 +205,7 @@ class Game{
 };
 
 int main() {
-	Game Tetris(0, 0, 0, false, 24);
+	Game Tetris(0, 0, 0, false, 25);
 	Tetris.start();
 	return 0;
 }
