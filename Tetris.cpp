@@ -3,7 +3,6 @@
 #include <random>
 #include <conio.h>
 #include <chrono>
-#include <thread>
 #include <Windows.h>
 using namespace std;
 
@@ -32,25 +31,41 @@ class Game{
 		}
 		
 		void getNextPiece() {	// Generate a random next piece
-			random_device rd;
-			mt19937 gen(rd());
-			uniform_int_distribution<> distribution(1, 7);
+			//random_device rd;
+			//mt19937 gen(rd());
+			//uniform_int_distribution<> distribution(1, 7);
 			
-			nextPiece = distribution(gen);
+			//nextPiece = distribution(gen);
 		}
 		
 		void clearScreen() {
 			system("cls");
 			return;
 		}
-
-		bool checkCollision(int direction) {
-		}
-
-		void updatePiece(char keypress) {
-		}
 		
-		void placePiece() {
+		void placePiece() {	// Fix the moving piece in place
+		}
+
+		bool checkCollision(int direction) { // 0 = up, 1 = down, 2 = left, 3 = right
+			return false;
+		}
+
+		void updatePiece(char keypress, int frame, int dropFrame) {
+			if (frame == dropFrame and !checkCollision(1)) pieceY--;	// Block descends
+			if (frame == dropFrame and checkCollision(1)) placePiece();	// Block fall to rest
+			
+			if (keypress == 'a') {	// Left Movement
+				if (!checkCollision(2)) pieceX--;
+			}
+			
+			if (keypress == 'd') {	// Right Movement
+				if (!checkCollision(3)) pieceX++;
+			}
+			
+			if (keypress == 's') {	// Down Movement
+				if (!checkCollision(1)) pieceY--;
+				if (checkCollision(1)) placePiece();
+			}
 		}
 		
 		bool checkGameOver() {
@@ -179,11 +194,11 @@ class Game{
 		Game(int s, int l, int c, bool g, int f) {
     			score = s;			// Current Score
     			level = l;			// Current level
-			cleared = c;
+				cleared = c;
     			gameOver = g;			// If the game is over
     			fps = f;			// Target fps		
-			frame = 0;	
-            		boardClear();
+				frame = 0;	
+            	boardClear();
 		}
 
 		void start() {	// Main Game Loop
@@ -192,7 +207,7 @@ class Game{
 				clearScreen();
 				handleInput();
 				drawBoard();
-				this_thread::sleep_for(chrono::milliseconds(1000 / fps));
+				sleep(1000 / fps); // Wait until next frame
 				frame += 1;
 				if (frame == fps) {
 					frame = 0;
@@ -205,7 +220,7 @@ class Game{
 };
 
 int main() {
-	Game Tetris(0, 0, 0, false, 25);
+	Game Tetris(0, 0, 0, false, 10);
 	Tetris.start();
 	return 0;
 }
